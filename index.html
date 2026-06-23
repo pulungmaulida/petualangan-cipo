@@ -74,7 +74,7 @@
         }
 
         const ceritaData = [
-            {
+            { // Slide 0
                 type: "pembuka",
                 gambarCipo: "assets/cipo_ceria.png",
                 gambarAset: "",
@@ -83,7 +83,28 @@
                 teks: "Halo adik-adik! Kenalin, namaku Cipo. Aku tupai yang tinggal di Desa Tajuk Kopeng yang indah banget! Hari ini, aku mau ngajak kalian berpetualang bareng aku. Siap?",
                 tombolText: "Mulai Petualangan! 🚀"
             },
-            {
+            { // Slide 1 [BARU: Fakta Kebakaran]
+                type: "cerita",
+                gambarCipo: "assets/cipo_waspada.png",
+                gambarAset: "",
+                overlay: "bg-orange-950/20", 
+                animasiCipo: "animate__shakeY",
+                teks: "Oh iya, beberapa waktu lalu, sempat terjadi kebakaran hebat di hutan Gunung Merbabu atas sana. Banyak pohon yang hangus terbakar dan mati... 🪵🔥",
+                tombolText: "Lanjut Selidiki 🧐"
+            },
+            { // Slide 2 [BARU: Kuis Kebakaran]
+                type: "kuis",
+                gambarCipo: "assets/cipo_waspada.png",
+                gambarAset: "",
+                overlay: "bg-orange-900/20",
+                animasiCipo: "goyang-santai",
+                pertanyaan: "Kenapa bekas kebakaran hutan di gunung bisa memicu banjir dan longsor di Desa Tajuk yang letaknya di bawah?",
+                pilihan: [
+                    { teks: "A. Karena akar pohon yang hangus tidak bisa lagi menyerap air hujan dan menahan tanah", benar: true, penjelasan: "TENTU SAJA BETUL! Saat hutan di atas gundul karena kebakaran, gak ada lagi 'benteng' akar yang menahan air. Air hujan bakal langsung meluncur deras ke bawah membawa lumpur!" },
+                    { teks: "B. Karena abu bekas kebakaran sifatnya licin seperti sabun", benar: false, penjelasan: "TetTot! Bukan karena licin ya, tapi karena tanaman penahan airnya sudah habis terbakar, jadi tidak ada yang menyerap air hujan!" }
+                ]
+            },
+            { // Slide 3 (Geser dari Slide 1 Lama)
                 type: "cerita",
                 gambarCipo: "assets/cipo_ceria.png",
                 gambarAset: "",
@@ -92,7 +113,7 @@
                 teks: "Wah, pas lagi jalan-jalan di sekitar Desa Tajuk, Cipo sedih banget melihat banyak sampah plastik menyumbat selokan warga. Di lereng bukit juga banyak pohon yang ditebang.",
                 tombolText: "Lanjut Cerita ➡️"
             },
-            {
+            { // Slide 4 (Geser dari Slide 2 Lama)
                 type: "kuis",
                 gambarCipo: "assets/cipo_ceria.png",
                 gambarAset: "",
@@ -101,10 +122,10 @@
                 pertanyaan: "Nah, menurut adik-adik, kalau selokan mampet dan pohon gundul dibiarkan, apa yang bakal terjadi saat musim hujan nanti?",
                 pilihan: [
                     { teks: "A. Desanya jadi makin estetik dan kekinian", benar: false, penjelasan: "TetTot! Salah dong. Sampah dan bukit gundul malah bikin desa kita jadi bahaya saat hujan!" },
-                    { teks: "B. Bisa memicu bencana BANJIR dan LONGSOR!", benar: true, penjelasan: "HOREEE! Hebat kalian benar! Sampah bikin air meluap (banjir), dan tanah gundul ga ada akar pohon yang megangin, jadi gampang longsor!" }
+                    { teks: "B. Bisa memicu bencana BANJIR dan LONGSOR!", benar: true, penjelasan: "HOREEE! Hebat kalian benar! Sampah bikin air meluap (banjir), dan tanah gundul tidak ada akar pohon yang megangin, jadi gampang longsor!" }
                 ]
             },
-            {
+            { // Slide 5 (Geser dari Slide 3 Lama)
                 type: "cerita",
                 gambarCipo: "assets/cipo_waspada.png",
                 gambarAset: "",
@@ -113,7 +134,7 @@
                 teks: "Glek! Tiba-tiba langit Desa Tajuk berubah jadi gelap gulita... *DUARRR!* Suara petir bersahutan dan hujan deras mulai turun berhari-hari. Cipo langsung buru-buru buka payungnya! 🌧️",
                 tombolText: "Cek Keliling Desa 🌍"
             },
-            {
+            { // Slide 6 (Geser dari Slide 4 Lama)
                 type: "cerita",
                 gambarCipo: "assets/cipo_waspada.png",
                 gambarAset: "assets/tanah_retak.png", 
@@ -123,7 +144,7 @@
                 teks: "Pas keliling desa, Cipo melihat air sumur warga mulai keruh berlumpur, dan ada retakan tanah di bukit belakang sekolah! Waduh, ini tanda-tanda bahaya longsor mulai mendekat!",
                 tombolText: "Siapkan Tas Sakti! 🎒"
             },
-            {
+            { // Slide 7 (Geser dari Slide 5 Lama)
                 type: "kuis",
                 gambarCipo: "assets/cipo_waspada.png",
                 gambarAset: "assets/tas_siaga.png", 
@@ -133,10 +154,10 @@
                 pertanyaan: "Sebelum keadaan makin bahaya, Cipo mau siapin 'Tas Siaga Bencana' nih. Menurut adik-adik, barang darurat apa aja yang WAJIB masuk ke dalam tas?",
                 pilihan: [
                     { teks: "A. Air minum, biskuit, senter, obat-obatan, dan surat berharga", benar: true, penjelasan: "TOP BANGET! Air & makanan buat ganjal perut, senter kalau mati lampu, dan obat-obatan kalau ada yang terluka. Ini namanya barang penyelamat!" },
-                    { teks: "B. Nintendo Switch, mainan robot, sama buku komik", benar: false, penjelasan: "Waduh, nanti pas evakuasi kita ga sempat main game dong! Mainannya ditinggal dulu ya, kita bawa yang penting untuk bertahan hidup." }
+                    { teks: "B. Nintendo Switch, mainan robot, sama buku komik", benar: false, penjelasan: "Waduh, nanti pas evakuasi kita tidak sempat main game dong! Mainannya ditinggal dulu ya, kita bawa yang penting untuk bertahan hidup." }
                 ]
             },
-            {
+            { // Slide 8 (Geser dari Slide 6 Lama)
                 type: "cerita",
                 gambarCipo: "assets/cipo_panik.png",
                 gambarAset: "",
@@ -145,7 +166,7 @@
                 teks: "*KRUKKK... GEMURUH...* Tiba-tiba terdengar suara keras dari atas bukit! Tanah dan batu mulai longsor ke bawah! Cipo langsung ambil peluit daruratnya dan meniup kencang: *PRRIIIITTT!!! PRRIIIITTT!!!* 🚨",
                 tombolText: "Selamatkan Diri! 🏃‍♂️"
             },
-            {
+            { // Slide 9 (Geser dari Slide 7 Lama)
                 type: "kuis",
                 gambarCipo: "assets/cipo_panik.png",
                 gambarAset: "",
@@ -153,11 +174,11 @@
                 animasiCipo: "animate__shakeY",
                 pertanyaan: "Bencana longsor sudah terjadi! Cipo berteriak meminta kita segera evakuasi. Ke mana arah lari yang paling AMAN untuk menyelamatkan diri?",
                 pilihan: [
-                    { teks: "A. Masuk ke dalam rumah, kunci pintu, terus ngumpet di bawah kasur", benar: false, penjelasan: "Waduh BAHAYA banget! Kalau ada longsor, kita ga boleh ngumpet di dalam bangunan karena bangunannya bisa roboh tertimbun tanah!" },
+                    { teks: "A. Masuk ke dalam rumah, kunci pintu, terus ngumpet di bawah kasur", benar: false, penjelasan: "Waduh BAHAYA banget! Kalau ada longsor, kita tidak boleh ngumpet di dalam bangunan karena bangunannya bisa roboh tertimbun tanah!" },
                     { teks: "B. Lari keluar rumah mencari tempat yang tinggi, terbuka, dan lapang (titik kumpul)", benar: true, penjelasan: "LUAR BIASA JOSSS! Jawaban kalian 100% benar! Kita harus lari ke tempat terbuka yang jauh dari lereng bukit agar aman dari timbunan tanah." }
                 ]
             },
-            {
+            { // Slide 10 (Geser dari Slide 8 Lama)
                 type: "tamat",
                 gambarCipo: "assets/cipo_ceria.png",
                 gambarAset: "",
@@ -178,14 +199,14 @@
 
             bgOverlay.className = `fixed inset-0 ${data.overlay} transition-all duration-1000 z-0`;
 
-            // LOGIKA AUDIO & SELESAI
+            // LOGIKA AUDIO & SELESAI (Udah disesuaikan dengan nomor slide baru)
             if (currentSlide === 0) {
                 sfxAlert.pause(); sfxAlert.currentTime = 0;
                 sfxLongsor.pause(); sfxLongsor.currentTime = 0;
-            } else if (currentSlide === 3) {
+            } else if (currentSlide === 5) { // Dulu slide 3 (langit gelap)
                 bgmSantai.pause();
                 sfxAlert.play().catch(e => console.log("Audio play blocked"));
-            } else if (currentSlide === 6) {
+            } else if (currentSlide === 8) { // Dulu slide 6 (longsor terjadi)
                 sfxAlert.volume = 0.1;
                 sfxLongsor.play();
                 
