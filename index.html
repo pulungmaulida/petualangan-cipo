@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Cipo: Siaga Bencana Desa Tajuk</title>
+    <link rel="icon" type="image/png" href="assets/cipo_avatar1.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Fredoka', sans-serif; }
+        .goyang-santai {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-6 overflow-x-hidden relative">
+    
+    <div id="bg-screen" class="fixed inset-0 bg-cover bg-center transition-all duration-1000 z-0" style="background-image: url('assets/desa_indrapura.png');"></div>
+    <div id="bg-overlay" class="fixed inset-0 bg-black/20 transition-all duration-1000 z-0"></div>
+
+    <header class="text-center z-10 relative">
+        <h1 class="flex items-center justify-center gap-3 text-3xl md:text-5xl font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.6)] animate__animated animate__fadeInDown">
+            <img src="assets/cipo_avatar1.png" class="w-10 h-10 md:w-14 md:h-14 aspect-square rounded-full object-cover shadow-md animate__animated animate__pulse infinite" alt="Logo Cipo">
+            Petualangan Cipo di Desa Tajuk
+            <img src="assets/cipo_avatar1.png" class="w-10 h-10 md:w-14 md:h-14 aspect-square rounded-full object-cover shadow-md animate__animated animate__pulse infinite" alt="Logo Cipo">
+        </h1>
+    </header>
+
+    <main class="w-full max-w-6xl mx-auto my-4 z-10 relative flex flex-col md:flex-row items-center justify-center gap-6">
+        
+        <div id="main-box" class="w-full md:max-w-2xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-green-500 text-center animate__animated animate__jackInTheBox">
+            <div id="game-container" class="w-full">
+                </div>
+        </div>
+
+        <div id="side-asset-box" class="hidden w-full md:w-80 bg-yellow-100/90 backdrop-blur-sm rounded-3xl shadow-2xl p-4 border-4 border-yellow-400 flex-col items-center justify-center text-center animate__animated">
+            </div>
+
+    </main>
+
+    <footer class="text-center text-white font-bold text-sm drop-shadow-md z-10 relative">
+        Pendidikan & Teknologi Kebencanaan © 2026
+    </footer>
+
+    <script>
+        // Setup Audio Sfx
+        const sfxCorrect = new Audio('assets/sfx_correct.wav');
+        const sfxWrong = new Audio('assets/sfx_wrong.wav');
+        const sfxAlert = new Audio('assets/sfx_alert.wav'); 
+        sfxAlert.loop = true; 
+
+        const sfxLongsor = new Audio('assets/sfx_longsor.wav');
+        const sfxWhistle = new Audio('assets/sfx_whistle.wav');
+        const sfxApplause = new Audio('assets/sfx_applause.wav');
+
+        // BGM Banjo Man
+        const bgmSantai = new Audio('assets/bgm_santai.mp3');
+        bgmSantai.loop = true;
+        bgmSantai.volume = 0.25;
+
+        function stopAllSFX() {
+            sfxCorrect.pause(); sfxCorrect.currentTime = 0;
+            sfxWrong.pause(); sfxWrong.currentTime = 0;
+        }
+
+        const ceritaData = [
+            {
+                type: "pembuka",
+                gambarCipo: "assets/cipo_ceria.png",
+                gambarAset: "",
+                overlay: "bg-black/10",
+                animasiCipo: "animate__bounceIn",
+                teks: "Halo adik-adik! Kenalin, namaku Cipo. Aku tupai yang tinggal di Desa Tajuk Kopeng yang indah banget! Hari ini, aku mau ngajak kalian berpetualang bareng aku. Siap?",
+                tombolText: "Mulai Petualangan! 🚀"
+            },
+            {
+                type: "cerita",
+                gambarCipo: "assets/cipo_ceria.png",
+                gambarAset: "",
+                overlay: "bg-amber-900/10", 
+                animasiCipo: "animate__shakeX",
+                teks: "Wah, pas lagi jalan-jalan di sekitar Desa Tajuk, Cipo sedih banget melihat banyak sampah plastik menyumbat selokan warga. Di lereng bukit juga banyak pohon yang ditebang.",
+                tombolText: "Lanjut Cerita ➡️"
+            },
+            {
+                type: "kuis",
+                gambarCipo: "assets/cipo_ceria.png",
+                gambarAset: "",
+                overlay: "bg-amber-950/20",
+                animasiCipo: "goyang-santai",
+                pertanyaan: "Nah, menurut adik-adik, kalau selokan mampet dan pohon gundul dibiarkan, apa yang bakal terjadi saat musim hujan nanti?",
+                pilihan: [
+                    { teks: "A. Desanya jadi makin estetik dan kekinian", benar: false, penjelasan: "TetTot! Salah dong. Sampah dan bukit gundul malah bikin desa kita jadi bahaya saat hujan!" },
+                    { teks: "B. Bisa memicu bencana BANJIR dan LONGSOR!", benar: true, penjelasan: "HOREEE! Hebat kalian benar! Sampah bikin air meluap (banjir), dan tanah gundul ga ada akar pohon yang megangin, jadi gampang longsor!" }
+                ]
+            },
+            {
+                type: "cerita",
+                gambarCipo: "assets/cipo_waspada.png",
+                gambarAset: "",
+                overlay: "bg-slate-900/60", 
+                animasiCipo: "animate__fadeIn",
+                teks: "Glek! Tiba-tiba langit Desa Tajuk berubah jadi gelap gulita... *DUARRR!* Suara petir bersahutan dan hujan deras mulai turun berhari-hari. Cipo langsung buru-buru buka payungnya! 🌧️",
+                tombolText: "Cek Keliling Desa 🌍"
+            },
+            {
+                type: "cerita",
+                gambarCipo: "assets/cipo_waspada.png",
+                gambarAset: "assets/tanah_retak.png", 
+                overlay: "bg-slate-900/70",
+                animasiCipo: "animate__headShake",
+                animasiAset: "animate__wobble infinite", 
+                teks: "Pas keliling desa, Cipo melihat air sumur warga mulai keruh berlumpur, dan ada retakan tanah di bukit belakang sekolah! Waduh, ini tanda-tanda bahaya longsor mulai mendekat!",
+                tombolText: "Siapkan Tas Sakti! 🎒"
+            },
+            {
+                type: "kuis",
+                gambarCipo: "assets/cipo_waspada.png",
+                gambarAset: "assets/tas_siaga.png", 
+                overlay: "bg-slate-900/50",
+                animasiCipo: "goyang-santai",
+                animasiAset: "animate__pulse infinite", 
+                pertanyaan: "Sebelum keadaan makin bahaya, Cipo mau siapin 'Tas Siaga Bencana' nih. Menurut adik-adik, barang darurat apa aja yang WAJIB masuk ke dalam tas?",
+                pilihan: [
+                    { teks: "A. Air minum, biskuit, senter, obat-obatan, dan surat berharga", benar: true, penjelasan: "TOP BANGET! Air & makanan buat ganjal perut, senter kalau mati lampu, dan obat-obatan kalau ada yang terluka. Ini namanya barang penyelamat!" },
+                    { teks: "B. Nintendo Switch, mainan robot, sama buku komik", benar: false, penjelasan: "Waduh, nanti pas evakuasi kita ga sempat main game dong! Mainannya ditinggal dulu ya, kita bawa yang penting untuk bertahan hidup." }
+                ]
+            },
+            {
+                type: "cerita",
+                gambarCipo: "assets/cipo_panik.png",
+                gambarAset: "",
+                overlay: "bg-red-950/70", 
+                animasiCipo: "animate__flash infinite",
+                teks: "*KRUKKK... GEMURUH...* Tiba-tiba terdengar suara keras dari atas bukit! Tanah dan batu mulai longsor ke bawah! Cipo langsung ambil peluit daruratnya dan meniup kencang: *PRRIIIITTT!!! PRRIIIITTT!!!* 🚨",
+                tombolText: "Selamatkan Diri! 🏃‍♂️"
+            },
+            {
+                type: "kuis",
+                gambarCipo: "assets/cipo_panik.png",
+                gambarAset: "",
+                overlay: "bg-red-900/60",
+                animasiCipo: "animate__shakeY",
+                pertanyaan: "Bencana longsor sudah terjadi! Cipo berteriak meminta kita segera evakuasi. Ke mana arah lari yang paling AMAN untuk menyelamatkan diri?",
+                pilihan: [
+                    { teks: "A. Masuk ke dalam rumah, kunci pintu, terus ngumpet di bawah kasur", benar: false, penjelasan: "Waduh BAHAYA banget! Kalau ada longsor, kita ga boleh ngumpet di dalam bangunan karena bangunannya bisa roboh tertimbun tanah!" },
+                    { teks: "B. Lari keluar rumah mencari tempat yang tinggi, terbuka, dan lapang (titik kumpul)", benar: true, penjelasan: "LUAR BIASA JOSSS! Jawaban kalian 100% benar! Kita harus lari ke tempat terbuka yang jauh dari lereng bukit agar aman dari timbunan tanah." }
+                ]
+            },
+            {
+                type: "tamat",
+                gambarCipo: "assets/cipo_ceria.png",
+                gambarAset: "",
+                overlay: "bg-black/10",
+                animasiCipo: "animate__jackInTheBox",
+                teks: "Horeee! Berkat kekompakan adik-adik kelas 5, Cipo dan seluruh warga Desa Tajuk berhasil selamat di tempat pengungsian yang aman! Kalian resmi jadi Pahlawan Siaga Bencana! 🏆🌟",
+                tombolText: "Main Lagi Dari Awal 🔄"
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function renderSlide() {
+            const container = document.getElementById('game-container');
+            const bgOverlay = document.getElementById('bg-overlay');
+            const sideBox = document.getElementById('side-asset-box');
+            const data = ceritaData[currentSlide];
+
+            bgOverlay.className = `fixed inset-0 ${data.overlay} transition-all duration-1000 z-0`;
+
+            // LOGIKA AUDIO & SELESAI
+            if (currentSlide === 0) {
+                sfxAlert.pause(); sfxAlert.currentTime = 0;
+                sfxLongsor.pause(); sfxLongsor.currentTime = 0;
+            } else if (currentSlide === 3) {
+                bgmSantai.pause();
+                sfxAlert.play().catch(e => console.log("Audio play blocked"));
+            } else if (currentSlide === 6) {
+                sfxAlert.volume = 0.1;
+                sfxLongsor.play();
+                
+                // Peluit Pertama (Bunyi setelah 1.5 detik gemuruh)
+                setTimeout(() => {
+                    sfxWhistle.play();
+                }, 1500);
+
+                // Peluit Kedua (Bunyi setelah jeda pendek dari bunyi pertama)
+                setTimeout(() => {
+                    sfxWhistle.currentTime = 0;
+                    sfxWhistle.play();
+                }, 2700); 
+            } else if (data.type === "tamat") {
+                sfxAlert.pause(); sfxLongsor.pause();
+                sfxApplause.play();
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            }
+
+            // LOGIKA RENDER KOTAK SAMPING
+            if (data.gambarAset) {
+                sideBox.className = "w-full md:w-80 bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border-4 border-yellow-400 flex flex-col items-center justify-center text-center animate__animated animate__fadeInRight";
+                sideBox.innerHTML = `
+                    <img src="${data.gambarAset}" class="w-48 h-48 md:w-60 md:h-60 object-contain mx-auto animate__animated ${data.animasiAset}">
+                `;
+            } else {
+                sideBox.className = "hidden";
+            }
+
+            // RENDER KONTEN UTAMA
+            if (data.type === "pembuka" || data.type === "cerita") {
+                container.innerHTML = `
+                    <div class="w-full flex justify-center mb-4">
+                        <img src="${data.gambarCipo}" alt="Cipo" class="w-44 h-44 md:w-56 md:h-56 object-contain mx-auto animate__animated ${data.animasiCipo} goyang-santai">
+                    </div>
+                    <p class="text-2xl md:text-3xl text-gray-700 leading-relaxed mb-6 font-medium px-4">${data.teks}</p>
+                    <button onclick="nextSlide()" class="bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition duration-200 cursor-pointer animate__animated animate__pulse infinite">
+                        ${data.tombolText}
+                    </button>
+                `;
+            } 
+            else if (data.type === "kuis") {
+                let pilihanHtml = data.pilihan.map((pil, index) => `
+                    <button onclick="cekJawaban(${index})" class="w-full text-left bg-white hover:bg-yellow-100 border-3 border-gray-200 hover:border-yellow-400 p-4 rounded-2xl text-xl font-bold transition duration-200 cursor-pointer mb-3 shadow-sm transform hover:-translate-y-1">
+                        ${pil.teks}
+                    </button>
+                `).join('');
+
+                container.innerHTML = `
+                    <div class="w-full flex justify-center mb-2">
+                        <img src="${data.gambarCipo}" alt="Cipo" class="w-36 h-36 object-contain mx-auto ${data.animasiCipo}">
+                    </div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-orange-600 mb-6 px-2">${data.pertanyaan}</h3>
+                    <div class="w-full max-w-xl mx-auto">${pilihanHtml}</div>
+                    <div id="feedback" class="mt-4 text-xl md:text-2xl font-bold hidden px-4 py-4 rounded-2xl animate__animated"></div>
+                    <button id="btn-lanjut-kuis" onclick="nextSlide()" class="mt-6 bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-3 px-8 rounded-full hidden mx-auto cursor-pointer animate__animated animate__bounceIn">
+                        Lanjut Petualangan ➡️
+                    </button>
+                `;
+            } 
+            else if (data.type === "tamat") {
+                container.innerHTML = `
+                    <div class="w-full flex justify-center mb-6">
+                        <img src="${data.gambarCipo}" alt="Cipo" class="w-48 h-48 md:w-64 md:h-64 object-contain mx-auto ${data.animasiCipo}">
+                    </div>
+                    <p class="text-2xl md:text-3xl text-gray-700 leading-relaxed mb-6 font-bold px-4">${data.teks}</p>
+                    <button onclick="restartGame()" class="bg-orange-500 hover:bg-orange-600 text-white text-xl font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-200 cursor-pointer">
+                        ${data.tombolText}
+                    </button>
+                `;
+            }
+        }
+
+        function nextSlide() {
+            if(currentSlide === 0) {
+                bgmSantai.play().catch(e => console.log("BGM diblokir browser"));
+            }
+
+            const mainBox = document.getElementById('main-box');
+            const sideBox = document.getElementById('side-asset-box');
+            
+            // Dua-duanya dikasih animasi keluar barengan
+            mainBox.className = "w-full md:max-w-2xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-green-500 text-center animate__animated animate__fadeOutLeft";
+            if (sideBox.classList.contains('hidden') === false) {
+                sideBox.className = "w-full md:w-80 bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border-4 border-yellow-400 flex flex-col items-center justify-center text-center animate__animated animate__fadeOutLeft";
+            }
+            
+            setTimeout(() => {
+                currentSlide++;
+                renderSlide();
+                mainBox.className = "w-full md:max-w-2xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-green-500 text-center animate__animated animate__fadeInRight";
+            }, 500);
+        }
+
+        function restartGame() {
+            const mainBox = document.getElementById('main-box');
+            mainBox.className = "w-full md:max-w-2xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-green-500 text-center animate__animated animate__zoomOut";
+            
+            setTimeout(() => {
+                currentSlide = 0;
+                bgmSantai.currentTime = 0;
+                bgmSantai.volume = 0.25;
+                bgmSantai.play();
+                renderSlide();
+                mainBox.className = "w-full md:max-w-2xl bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 border-4 border-green-500 text-center animate__animated animate__zoomIn";
+            }, 500);
+        }
+
+        function cekJawaban(index) {
+            stopAllSFX();
+
+            const data = ceritaData[currentSlide];
+            const pilihan = data.pilihan[index];
+            const feedbackDiv = document.getElementById('feedback');
+            const btnLanjut = document.getElementById('btn-lanjut-kuis');
+
+            feedbackDiv.classList.remove('hidden', 'bg-green-100', 'text-green-700', 'bg-red-100', 'text-red-700', 'animate__rubberBand', 'animate__shakeX');
+
+            if (pilihan.benar) {
+                sfxCorrect.play();
+                feedbackDiv.classList.add('bg-green-100', 'text-green-700', 'animate__rubberBand');
+                feedbackDiv.innerHTML = `🎉 ${pilihan.penjelasan}`;
+                feedbackDiv.classList.remove('hidden');
+                btnLanjut.classList.remove('hidden');
+            } else {
+                sfxWrong.play();
+                feedbackDiv.classList.add('bg-red-100', 'text-red-700', 'animate__shakeX');
+                feedbackDiv.innerHTML = `❌ ${pilihan.penjelasan}`;
+                feedbackDiv.classList.remove('hidden');
+            }
+        }
+
+        renderSlide();
+    </script>
+</body>
+</html>
